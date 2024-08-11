@@ -36,6 +36,7 @@ class Appointments {
       this.times.get(doctor).add(new Date(appointmentTime).getTime());
       appointmentTime.setMinutes(appointmentTime.getMinutes() + 15);
     }
+    console.log("Appointments created")
   }
 
   bookTime(doctor, time) {
@@ -64,7 +65,7 @@ class Appointments {
           this.times.get(doctor).add(appointmentTime);
           console.log(`${code} booking has expired`);
         }
-      }, 10000);
+      }, 30 * 60 * 1000);
 
       return code;
     }
@@ -81,6 +82,7 @@ class Appointments {
 
     booking.confirmed = true;
     this.bookings.set(code, booking);
+    console.log(`${code} booking is confirmed`)
   }
 }
 
