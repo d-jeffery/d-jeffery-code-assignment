@@ -6,6 +6,8 @@
 
 ## Run
 
+To start the server @ localhost:3000
+
 `npm run start`
 
 ## API
