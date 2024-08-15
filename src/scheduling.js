@@ -62,10 +62,6 @@ class Scheduling {
       throw new Error(`Slot ${slot} unavailable`);
     }
 
-    // if (slot - Date.now() < 24 * 60 * 60 * 1000) {
-    //   throw new Error('Not within 24hrs');
-    // }
-
     const token = uuid.v4();
     this.unconfirmedAppointments.set(token, { client, provider, slot });
     this.providers.get(provider).bookAppointment(slot);

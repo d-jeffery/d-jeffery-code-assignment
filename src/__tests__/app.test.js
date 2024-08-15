@@ -22,9 +22,15 @@ describe('User Endpoints', () => {
     it('POST /provider/times should create new time slots', async () => {
 
         await request(app)
+            .post('/provider/register')
+            .send({name: "Dr Peter"})
+            .set('Accept', 'application/json')
+            .expect(201)
+
+        await request(app)
             .post('/provider/times')
             .send({
-                provider: "Dr Jones",
+                provider: "Dr Peter",
                 startTime: 1723680000000,
                 endTime: 1723682700000,
             })
@@ -33,7 +39,7 @@ describe('User Endpoints', () => {
 
         const result = await request(app)
             .post('/appointment/list/')
-            .send({provider: "Dr Jones"})
+            .send({provider: "Dr Peter"})
             .set('Accept', 'application/json')
             .expect(200);
 
@@ -43,9 +49,15 @@ describe('User Endpoints', () => {
     it('POST /appointment/list should an array of times for a given provider', async () => {
 
         await request(app)
+            .post('/provider/register')
+            .send({name: "Dr Randle"})
+            .set('Accept', 'application/json')
+            .expect(201)
+
+        await request(app)
             .post('/provider/times')
             .send({
-                provider: "Dr Jones",
+                provider: "Dr Randle",
                 startTime: 1723680000000,
                 endTime: 1723682700000,
             })
@@ -54,7 +66,7 @@ describe('User Endpoints', () => {
 
         const result = await request(app)
             .post('/appointment/list/')
-            .send({provider: "Dr Jones"})
+            .send({provider: "Dr Randle"})
             .set('Accept', 'application/json')
             .expect(200);
 
@@ -63,12 +75,27 @@ describe('User Endpoints', () => {
 
     it('POST /provider/reserve should create new time slots', async () => {
 
+        const startTime = Date.now() + 48 * 60 * 60 * 1000;
+        const endTime = Date.now() + 60 * 60 * 60 * 1000;
+
+        await request(app)
+            .post('/client/register')
+            .send({name: "Mr James"})
+            .set('Accept', 'application/json')
+            .expect(201);
+
+        await request(app)
+            .post('/provider/register')
+            .send({name: "Dr Peterson"})
+            .set('Accept', 'application/json')
+            .expect(201);
+
         await request(app)
             .post('/provider/times')
             .send({
-                provider: "Dr Jones",
-                startTime: 1723680000000,
-                endTime: 1723682700000,
+                provider: "Dr Peterson",
+                startTime: startTime,
+                endTime: endTime,
             })
             .set('Accept', 'application/json')
             .expect(201);
@@ -76,9 +103,9 @@ describe('User Endpoints', () => {
         const result = await request(app)
             .post('/appointment/reserve')
             .send({
-                client: "Mr John",
-                provider: "Dr Jones",
-                slot: 1723680000000
+                client: "Mr James",
+                provider: "Dr Peterson",
+                slot: startTime
             })
             .set('Accept', 'application/json')
             .expect(200);
@@ -90,5 +117,46 @@ describe('User Endpoints', () => {
             .send({token: result.body.token})
             .set('Accept', 'application/json')
             .expect(201);
+    });
+
+
+    it('POST /provider/reserve should fail if not booked in time window', async () => {
+
+        const startTime = Date.now();
+        const endTime = Date.now() + 10 * 60 * 60 * 1000;
+
+        await request(app)
+            .post('/client/register')
+            .send({name: "Mr Jim"})
+            .set('Accept', 'application/json')
+            .expect(201);
+
+        await request(app)
+            .post('/provider/register')
+            .send({name: "Dr Daniel"})
+            .set('Accept', 'application/json')
+            .expect(201);
+
+        await request(app)
+            .post('/provider/times')
+            .send({
+                provider: "Dr Daniel",
+                startTime: startTime,
+                endTime: endTime,
+            })
+            .set('Accept', 'application/json')
+            .expect(201);
+
+        const result = await request(app)
+            .post('/appointment/reserve')
+            .send({
+                client: "Mr Jim",
+                provider: "Dr Daniel",
+                slot: startTime
+            })
+            .set('Accept', 'application/json')
+            .expect(400);
+
+        expect(result.text).toEqual("{\"error\":\"Booking must be within 24hr time window\"}")
     });
 });

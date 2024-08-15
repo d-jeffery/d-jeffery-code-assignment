@@ -84,7 +84,10 @@ app.post('/appointment/list', (req, res) => {
   }
 
   try {
-    res.status(200).send({ appointments: scheduling.getTimes(provider) });
+    res.status(200).send({
+      appointments: scheduling
+          .getTimes(provider)
+          .filter(appointment => appointment - Date.now() < 24 * 60 * 60 * 1000) });
   } catch (err) {
     res.status(400).send({ error: err.message });
   }
@@ -97,6 +100,11 @@ app.post('/appointment/reserve', (req, res) => {
   // Check we have the populated values
   if (!client || !provider || !slot) {
     res.status(400).send({ error: 'Missing values in payload' });
+    return;
+  }
+
+  if (slot - Date.now() < 24 * 60 * 60 * 1000) {
+    res.status(400).send({ error: 'Booking must be within 24hr time window' });
     return;
   }
 
