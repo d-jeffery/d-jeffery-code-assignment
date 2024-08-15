@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello World');
+  res.status(404).send('Not found');
 });
 
 // Provide times (for providers)

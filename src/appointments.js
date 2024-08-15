@@ -36,7 +36,7 @@ class Appointments {
       this.times.get(doctor).add(new Date(appointmentTime).getTime());
       appointmentTime.setMinutes(appointmentTime.getMinutes() + 15);
     }
-    console.log("Appointments created")
+    console.log('Appointments created');
   }
 
   bookTime(doctor, time) {
@@ -82,7 +82,7 @@ class Appointments {
 
     booking.confirmed = true;
     this.bookings.set(code, booking);
-    console.log(`${code} booking is confirmed`)
+    console.log(`${code} booking is confirmed`);
   }
 }
 

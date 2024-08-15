@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Client add booking should result in 1 entry 1`] = `
+Map {
+  1723680000000 => "Mr Harrison",
+}
+`;
