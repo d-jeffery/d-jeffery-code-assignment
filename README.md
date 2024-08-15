@@ -14,49 +14,67 @@
 
 ## API
 
+### Provider Register
+
+`POST /provider/register` creates a new provider
+
+Body: `{"id": "Dr John"}`
+
+---
+
 ### Provider times
 
-`POST /provider/times`
+`POST /provider/times` creates appointments 
 
-Takes following body example to create appointments for a given provider, and returns status 200 on success:
+Takes following body example to create appointments for a given provider and time range (in epoch). Returns status 201 on success:
 
-`{"doctor":"Dr John", "startTime": "2024-10-13 9:00 AM", "endTime": "2024-10-13 8:00 PM" }`
-
----
-
-### Client List
-
-`GET /client/list/:{provider's name}`
-
-Returns a list of all available appointments for given provider name
+Body: `{"provider":"Dr John", "startTime": "1723712400000", "endTime": "1723701600000" }`
 
 ---
 
-### Client Reserve
+### Client Register
 
-`POST /client/reserve`
+`POST /provider/register` creates a new provider
+
+Body: `{"id": "Mr Wayde"}`
+
+---
+
+### Appointment List
+
+`POST /appointment/list`
+
+Returns a list of all available appointments for given provider id
+
+Body: `{"provider": "Dr John"}`
+
+---
+
+### Appointment Reserve
+
+`POST /appointment/reserve`
 
 Takes following body example, and returns 200 on successful booking, along with confirmation code:
 
-`{"doctor":"Dr John", "time": "2024-10-13 9:15 AM"}`
+Body: `{"provider": "Dr John", "client": "Person", "slot": 1724130900000}`
+
+Returns a token, which is used to confirm the appointment.
 
 ---
 
-### Client Confirm
+### Appointment Confirm
 
-`POST /client/confirm`
+`POST /appointment/confirm`
 
 Takes following body example, and returns 200 on successful booking of appointment with given code:
 
-`{"code": "df898d87-3bb0-40f7-aa14-5b84466e6e6d"}`
+Body: `{"token": "e66c0b09-b85a-44bd-8931-e3f13c116c35"}`
 
 ---
 
-## TODOs
+## Tradeoffs
 
-- ~~I didn't implement an identity for clients, only providers. This means all bookings only reference the providers name, with no mention of the client ID. I ran out of time to start recording and populating client records due to the need to refactor, and rethink my datastructures~~
-- IDs for providers/clients to avoid collision - with no unique keys for clients or providers, we're relying on names being unique
-- Would have liked to have leveraged docker, but ran out of time to invest in a better dev cycle
-- Confirmation code should have been paired with client identity to ensure 1 client can't confirm the appointment of another
-- Used custom time format - I think I could have saved some time had I just used nodejs's implementation. I should have just went with milliseconds and handled the translation client side.
-- Using in-memory datastore's - if this was going to production, to preserve state, the records should be written to a stable datastore
+- For providers and clients, they each are distinguished by a unique ID. I would have liked to populate this field automatically and used it for lookups. I left ID to be populated by the consumer of the API, allowing them to use the ID format of their choosing.
+- Given the freeform id field, I made each API that required input be a POST call as not to have to read from the URL params. If IDs were not freeform, I would have used GETs where appropriate.
+- Switched to use epoch times for simplicity - this way the system is the source of truth and the epoch time can be parsed by the caller into whatever format & timezone required
+- Using a backing datastore would have been desirable, and could be setup in docker, but ran out of time to implement
