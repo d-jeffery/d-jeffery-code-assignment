@@ -16,6 +16,20 @@ app.get('/', (req, res) => {
     res.status(404).send('Not found');
 });
 
+// Register new client
+app.post('/client/register', (req, res) => {
+    const { name } = req.body;
+
+    if (!name) {
+        res.status(400).send({ error: 'Missing `name` in payload' });
+        return;
+    }
+
+    scheduling.registerClient(new Client(name));
+
+    res.sendStatus(201);
+});
+
 // Register new provider
 app.post('/provider/register', (req, res) => {
     const { name } = req.body;
@@ -30,7 +44,7 @@ app.post('/provider/register', (req, res) => {
     res.sendStatus(201);
 });
 
-// Provide times for provider
+// Schedule times for provider
 app.post('/provider/times', (req, res) => {
     const { provider, startTime, endTime } = req.body;
 
@@ -46,18 +60,33 @@ app.post('/provider/times', (req, res) => {
     res.sendStatus(201);
 });
 
-// Register new client
-app.post('/client/register', (req, res) => {
-    const { name } = req.body;
+// Get a list of appointments for a given provider
+app.post('/appointment/list', (req, res) => {
+    const { provider } = req.body;
 
-    if (!name) {
-        res.status(400).send({ error: 'Missing `name` in payload' });
+    // Check we have the populated values
+    if (!provider) {
+        res.status(400).send({ error: 'Missing provider in payload' });
         return;
     }
 
-    scheduling.registerClient(new Client(name));
-
-    res.sendStatus(201);
+    // Return back UTC dates in human-readable array of times
+    res.status(200).send({ appointments: scheduling.getTimes(provider) });
 });
+
+// Get a list of appointments for a given provider
+app.post('/appointment/reserve', (req, res) => {
+    const { client, provider, slot } = req.body;
+
+    // Check we have the populated values
+    if (!client || !provider || !slot) {
+        res.status(400).send({ error: 'Missing values in payload' });
+        return;
+    }
+
+    // Return back UTC dates in human-readable array of times
+    res.status(200).send({ token: scheduling.registerBooking(client, provider, slot) });
+});
+
 
 module.exports = app

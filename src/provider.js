@@ -1,3 +1,5 @@
+const date = require("date-and-time");
+
 class Provider {
   constructor(name) {
     this.name = name;
@@ -25,7 +27,10 @@ class Provider {
   }
 
   getAppointments() {
-    return this.appointments;
+    // Return appointments that aren't booked
+    return Array.from(this.appointments.entries())
+        .filter(appointment => !appointment[1])
+        .map(appointment => appointment[0]);
   }
 
   bookAppointment(slot) {

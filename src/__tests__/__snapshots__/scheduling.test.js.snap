@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Scheduling cancelBooking 1`] = `Map {}`;
-
-exports[`Scheduling cancelBooking 2`] = `
-Map {
-  1723680000000 => false,
-  1723680900000 => false,
-  1723681800000 => false,
-  1723682700000 => false,
-}
-`;
-
 exports[`Scheduling confirmBooking 1`] = `
 Map {
   1723680000000 => "Dr Jones",
@@ -18,36 +7,35 @@ Map {
 `;
 
 exports[`Scheduling confirmBooking 2`] = `
-Map {
-  1723680000000 => true,
-  1723680900000 => false,
-  1723681800000 => false,
-  1723682700000 => false,
-}
+[
+  1723680900000,
+  1723681800000,
+  1723682700000,
+]
 `;
 
 exports[`Scheduling register client 1`] = `
 Scheduling {
-  "clients": [
-    Client {
+  "clients": Map {
+    "Mr Harrison" => Client {
       "bookings": Map {},
       "name": "Mr Harrison",
     },
-  ],
-  "providers": [],
+  },
+  "providers": Map {},
   "unconfirmedAppointments": Map {},
 }
 `;
 
 exports[`Scheduling register provider 1`] = `
 Scheduling {
-  "clients": [],
-  "providers": [
-    Provider {
+  "clients": Map {},
+  "providers": Map {
+    "Dr Jones" => Provider {
       "appointments": Map {},
       "name": "Dr Jones",
     },
-  ],
+  },
   "unconfirmedAppointments": Map {},
 }
 `;

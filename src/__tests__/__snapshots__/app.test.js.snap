@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`User Endpoints POST /provider/times should create new time slots 1`] = `
+{
+  "appointments": [
+    1723680000000,
+    1723680900000,
+    1723681800000,
+  ],
+}
+`;
+
+exports[`User Endpoints POST /provider/times should create new time slots 2`] = `
+{
+  "appointments": [
+    1723680000000,
+    1723680900000,
+    1723681800000,
+  ],
+}
+`;
