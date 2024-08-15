@@ -34,7 +34,7 @@ Body: `{"provider":"Dr John", "startTime": "1723712400000", "endTime": "17237016
 
 ### Client Register
 
-`POST /provider/register` creates a new provider
+`POST /client/register` creates a new provider
 
 Body: `{"id": "Mr Wayde"}`
 
@@ -56,7 +56,7 @@ Body: `{"provider": "Dr John"}`
 
 Takes following body example, and returns 200 on successful booking, along with confirmation code:
 
-Body: `{"provider": "Dr John", "client": "Person", "slot": 1724130900000}`
+Body: `{"provider": "Dr John", "client": "Mr Wayde", "slot": 1724130900000}`
 
 Returns a token, which is used to confirm the appointment.
 

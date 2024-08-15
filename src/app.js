@@ -54,7 +54,7 @@ app.post('/provider/register', (req, res) => {
   res.sendStatus(201);
 });
 
-// Schedule times for provider
+// Submit times for provider
 app.post('/provider/times', (req, res) => {
   const { provider, startTime, endTime } = req.body;
 
@@ -94,7 +94,7 @@ app.post('/appointment/list', (req, res) => {
   }
 });
 
-// Book a valid slot in
+// Book a valid slot for a given provider
 app.post('/appointment/reserve', (req, res) => {
   const { client, provider, slot } = req.body;
 
@@ -116,7 +116,7 @@ app.post('/appointment/reserve', (req, res) => {
   }
 });
 
-// Confirm a booked appointment with a provider
+// Confirm a booked appointment
 app.post('/appointment/confirm', (req, res) => {
   const { token } = req.body;
 
@@ -133,7 +133,6 @@ app.post('/appointment/confirm', (req, res) => {
     return;
   }
 
-  // Return back UTC dates in human-readable array of times
   res.sendStatus(201);
 });
 
