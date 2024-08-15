@@ -1,5 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Scheduling cancelBooking 1`] = `Map {}`;
+
+exports[`Scheduling cancelBooking 2`] = `
+[
+  1723680000000,
+  1723680900000,
+  1723681800000,
+  1723682700000,
+]
+`;
+
 exports[`Scheduling confirmBooking 1`] = `
 Map {
   1723680000000 => "Dr Jones",

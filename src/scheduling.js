@@ -7,9 +7,13 @@ class Scheduling {
     this.unconfirmedAppointments = new Map();
   }
 
-  // TODO: dont register if already exists
   registerProvider(provider) {
     console.log(`Registering provider: ${provider.name}`);
+
+    if (this.providers.has(provider.name)) {
+      throw new Error(`Provider ${provider.name} already exists`);
+    }
+
     this.providers.set(provider.name, provider);
   }
 
@@ -21,7 +25,7 @@ class Scheduling {
     }
 
     this.providers.get(provider)
-        .addAppointments(startTime, endTime);
+      .addAppointments(startTime, endTime);
   }
 
   getTimes(provider) {
@@ -33,9 +37,13 @@ class Scheduling {
     return this.providers.get(provider).getAppointments();
   }
 
-  // TODO: dont register if already exists
   registerClient(client) {
     console.log(`Registering client: ${client.name}`);
+
+    if (this.clients.has(client.name)) {
+      throw new Error(`Client ${client.name} already exists`);
+    }
+
     this.clients.set(client.name, client);
   }
 
@@ -43,19 +51,32 @@ class Scheduling {
     console.log(`Registering booking for ${client}, with ${provider} for ${slot}`);
 
     if (!this.clients.has(client)) {
-      throw new Error(`Provider ${client} does not exist`);
+      throw new Error(`Client ${client} does not exist`);
     }
 
     if (!this.providers.has(provider)) {
       throw new Error(`Provider ${provider} does not exist`);
     }
 
-    if (!this.providers.get(provider).getAppointments().some(app => app === slot)) {
+    if (!this.providers.get(provider).getAppointments().some((app) => app === slot)) {
       throw new Error(`Slot ${slot} unavailable`);
     }
 
+    // if (slot - Date.now() < 24 * 60 * 60 * 1000) {
+    //   throw new Error('Not within 24hrs');
+    // }
+
     const token = uuid.v4();
     this.unconfirmedAppointments.set(token, { client, provider, slot });
+    this.providers.get(provider).bookAppointment(slot);
+
+    // Expire booking if we dont get confirmation
+    setTimeout(() => {
+      if (this.unconfirmedAppointments.has(token)) {
+        this.cancelBooking(token, provider, slot);
+      }
+    }, 30 * 60 * 1000, token, provider, slot);
+
     return token;
   }
 
@@ -78,15 +99,14 @@ class Scheduling {
 
     this.clients.get(appointment.client)
       .addBooking({ slot: appointment.slot, provider: appointment.provider });
-    this.providers.get(appointment.provider)
-      .bookAppointment(appointment.slot);
     this.unconfirmedAppointments.delete(token);
   }
 
-  // cancelBooking(token) {
-  //   console.log(`Cancelling booking for ${token}`);
-  //   this.unconfirmedAppointments.delete(token);
-  // }
+  cancelBooking(token, provider, slot) {
+    console.log(`${token} booking has expired for ${provider} at ${slot}`);
+    this.unconfirmedAppointments.delete(token);
+    this.providers.get(provider).releaseAppointment(slot);
+  }
 }
 
 module.exports = { Scheduling };

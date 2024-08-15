@@ -6,7 +6,11 @@
 
 ## Run
 
-`npm run start`
+`npm run start` or `docker compose up --build`
+
+## Test
+
+`npm test`
 
 ## API
 
@@ -50,9 +54,9 @@ Takes following body example, and returns 200 on successful booking of appointme
 
 ## TODOs
 
-- I didn't implement an identity for clients, only providers. This means all bookings only reference the providers name, with no mention of the client ID. I ran out of time to start recording and populating client records due to the need to refactor, and rethink my datastructures
+- ~~I didn't implement an identity for clients, only providers. This means all bookings only reference the providers name, with no mention of the client ID. I ran out of time to start recording and populating client records due to the need to refactor, and rethink my datastructures~~
 - IDs for providers/clients to avoid collision - with no unique keys for clients or providers, we're relying on names being unique
 - Would have liked to have leveraged docker, but ran out of time to invest in a better dev cycle
 - Confirmation code should have been paired with client identity to ensure 1 client can't confirm the appointment of another
 - Used custom time format - I think I could have saved some time had I just used nodejs's implementation. I should have just went with milliseconds and handled the translation client side.
-- Using in-memory datastore's - if this was going tom production, to preserve state, the records should be written to a stable datastore
+- Using in-memory datastore's - if this was going to production, to preserve state, the records should be written to a stable datastore

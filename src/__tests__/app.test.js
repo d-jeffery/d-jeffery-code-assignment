@@ -20,11 +20,6 @@ describe('User Endpoints', () => {
     });
 
     it('POST /provider/times should create new time slots', async () => {
-        await request(app)
-            .post('/provider/register')
-            .send({name: "Dr Jones"})
-            .set('Accept', 'application/json')
-            .expect(201);
 
         await request(app)
             .post('/provider/times')
@@ -45,12 +40,7 @@ describe('User Endpoints', () => {
         expect(result.body).toMatchSnapshot();
     });
 
-    it('POST /provider/times should create new time slots', async () => {
-        await request(app)
-            .post('/provider/register')
-            .send({name: "Dr Jones"})
-            .set('Accept', 'application/json')
-            .expect(201);
+    it('POST /appointment/list should an array of times for a given provider', async () => {
 
         await request(app)
             .post('/provider/times')
@@ -72,17 +62,6 @@ describe('User Endpoints', () => {
     });
 
     it('POST /provider/reserve should create new time slots', async () => {
-        await request(app)
-            .post('/provider/register')
-            .send({name: "Dr Jones"})
-            .set('Accept', 'application/json')
-            .expect(201);
-
-        await request(app)
-            .post('/client/register')
-            .send({name: "Mr John"})
-            .set('Accept', 'application/json')
-            .expect(201);
 
         await request(app)
             .post('/provider/times')
@@ -105,5 +84,11 @@ describe('User Endpoints', () => {
             .expect(200);
 
         expect(result.body.token).not.toBeNull()
+
+        await request(app)
+            .post('/appointment/confirm')
+            .send({token: result.body.token})
+            .set('Accept', 'application/json')
+            .expect(201);
     });
 });
