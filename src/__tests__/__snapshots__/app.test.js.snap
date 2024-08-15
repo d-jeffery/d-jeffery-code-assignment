@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`User Endpoints POST /appointment/list should an array of times for a given provider 1`] = `
+exports[`User Endpoints POST /appointment/list should return an array of times for a given provider 1`] = `
 {
   "appointments": [
     1723680000000,

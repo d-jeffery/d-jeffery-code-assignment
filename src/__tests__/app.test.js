@@ -6,7 +6,7 @@ describe('User Endpoints', () => {
     it('POST /provider/register should create a new provider', () => {
         return request(app)
             .post('/provider/register')
-            .send({name: "Dr Jones"})
+            .send({id: "Dr Jones"})
             .set('Accept', 'application/json')
             .expect(201);
     });
@@ -14,7 +14,7 @@ describe('User Endpoints', () => {
     it('POST /client/register should create a new client', () => {
         return request(app)
             .post('/client/register')
-            .send({name: "Mr John"})
+            .send({id: "Mr John"})
             .set('Accept', 'application/json')
             .expect(201);
     });
@@ -23,7 +23,7 @@ describe('User Endpoints', () => {
 
         await request(app)
             .post('/provider/register')
-            .send({name: "Dr Peter"})
+            .send({id: "Dr Peter"})
             .set('Accept', 'application/json')
             .expect(201)
 
@@ -46,11 +46,11 @@ describe('User Endpoints', () => {
         expect(result.body).toMatchSnapshot();
     });
 
-    it('POST /appointment/list should an array of times for a given provider', async () => {
+    it('POST /appointment/list should return an array of times for a given provider', async () => {
 
         await request(app)
             .post('/provider/register')
-            .send({name: "Dr Randle"})
+            .send({id: "Dr Randle"})
             .set('Accept', 'application/json')
             .expect(201)
 
@@ -73,20 +73,20 @@ describe('User Endpoints', () => {
         expect(result.body).toMatchSnapshot();
     });
 
-    it('POST /provider/reserve should create new time slots', async () => {
+    it('POST /appointment/reserve should create new time slots', async () => {
 
         const startTime = Date.now() + 48 * 60 * 60 * 1000;
         const endTime = Date.now() + 60 * 60 * 60 * 1000;
 
         await request(app)
             .post('/client/register')
-            .send({name: "Mr James"})
+            .send({id: "Mr James"})
             .set('Accept', 'application/json')
             .expect(201);
 
         await request(app)
             .post('/provider/register')
-            .send({name: "Dr Peterson"})
+            .send({id: "Dr Peterson"})
             .set('Accept', 'application/json')
             .expect(201);
 
@@ -120,20 +120,20 @@ describe('User Endpoints', () => {
     });
 
 
-    it('POST /provider/reserve should fail if not booked in time window', async () => {
+    it('POST /appointment/reserve should fail if not booked in time window', async () => {
 
         const startTime = Date.now();
         const endTime = Date.now() + 10 * 60 * 60 * 1000;
 
         await request(app)
             .post('/client/register')
-            .send({name: "Mr Jim"})
+            .send({id: "Mr Jim"})
             .set('Accept', 'application/json')
             .expect(201);
 
         await request(app)
             .post('/provider/register')
-            .send({name: "Dr Daniel"})
+            .send({id: "Dr Daniel"})
             .set('Accept', 'application/json')
             .expect(201);
 

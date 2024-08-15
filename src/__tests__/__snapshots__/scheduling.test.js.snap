@@ -30,7 +30,7 @@ Scheduling {
   "clients": Map {
     "Mr Harrison" => Client {
       "bookings": Map {},
-      "name": "Mr Harrison",
+      "id": "Mr Harrison",
     },
   },
   "providers": Map {},
@@ -44,7 +44,7 @@ Scheduling {
   "providers": Map {
     "Dr Jones" => Provider {
       "appointments": Map {},
-      "name": "Dr Jones",
+      "id": "Dr Jones",
     },
   },
   "unconfirmedAppointments": Map {},

@@ -8,13 +8,13 @@ class Scheduling {
   }
 
   registerProvider(provider) {
-    console.log(`Registering provider: ${provider.name}`);
+    console.log(`Registering provider: ${provider.id}`);
 
-    if (this.providers.has(provider.name)) {
-      throw new Error(`Provider ${provider.name} already exists`);
+    if (this.providers.has(provider.id)) {
+      throw new Error(`Provider ${provider.id} already exists`);
     }
 
-    this.providers.set(provider.name, provider);
+    this.providers.set(provider.id, provider);
   }
 
   submitTimes(provider, startTime, endTime) {
@@ -38,13 +38,13 @@ class Scheduling {
   }
 
   registerClient(client) {
-    console.log(`Registering client: ${client.name}`);
+    console.log(`Registering client: ${client.id}`);
 
-    if (this.clients.has(client.name)) {
-      throw new Error(`Client ${client.name} already exists`);
+    if (this.clients.has(client.id)) {
+      throw new Error(`Client ${client.id} already exists`);
     }
 
-    this.clients.set(client.name, client);
+    this.clients.set(client.id, client);
   }
 
   registerBooking(client, provider, slot) {
@@ -94,7 +94,7 @@ class Scheduling {
     }
 
     this.clients.get(appointment.client)
-      .addBooking({ slot: appointment.slot, provider: appointment.provider });
+      .addBooking(appointment.slot, appointment.provider);
     this.unconfirmedAppointments.delete(token);
   }
 

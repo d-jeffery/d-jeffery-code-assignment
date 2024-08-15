@@ -4,7 +4,7 @@ describe('Provider', () => {
   test('create with name', () => {
     const provider = new Provider('Dr Jones');
 
-    expect(provider.name).toBe('Dr Jones');
+    expect(provider.id).toBe('Dr Jones');
   });
 
   test('invalid range should throw', () => {

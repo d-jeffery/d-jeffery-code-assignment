@@ -2,6 +2,6 @@
 
 exports[`Client add booking should result in 1 entry 1`] = `
 Map {
-  1723680000000 => "Mr Harrison",
+  1723680000000 => "Dr Jones",
 }
 `;

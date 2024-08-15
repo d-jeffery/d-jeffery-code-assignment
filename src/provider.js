@@ -1,6 +1,6 @@
 class Provider {
   constructor(name) {
-    this.name = name;
+    this.id = name;
     this.appointments = new Map();
   }
 
@@ -41,7 +41,7 @@ class Provider {
       throw new Error(`${slot} has been reserved`);
     }
 
-    console.log(`Booked ${slot} for ${this.name}`);
+    console.log(`Booked ${slot} for ${this.id}`);
 
     this.appointments.set(slot, true);
   }
@@ -51,7 +51,7 @@ class Provider {
       throw new Error(`No appointment with id ${slot}`);
     }
 
-    console.log(`Release ${slot} for ${this.name}`);
+    console.log(`Release ${slot} for ${this.id}`);
 
     this.appointments.set(slot, false);
   }

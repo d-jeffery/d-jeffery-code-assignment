@@ -18,15 +18,15 @@ app.get('/', (req, res) => {
 
 // Register new client
 app.post('/client/register', (req, res) => {
-  const { name } = req.body;
+  const { id } = req.body;
 
-  if (!name) {
-    res.status(400).send({ error: 'Missing `name` in payload' });
+  if (!id) {
+    res.status(400).send({ error: 'Missing `id` in payload' });
     return;
   }
 
   try {
-    scheduling.registerClient(new Client(name));
+    scheduling.registerClient(new Client(id));
   } catch (err) {
     res.status(400).send({ error: err.message });
     return;
@@ -37,15 +37,15 @@ app.post('/client/register', (req, res) => {
 
 // Register new provider
 app.post('/provider/register', (req, res) => {
-  const { name } = req.body;
+  const { id } = req.body;
 
-  if (!name) {
-    res.status(400).send({ error: 'Missing `name` in payload' });
+  if (!id) {
+    res.status(400).send({ error: 'Missing `id` in payload' });
     return;
   }
 
   try {
-    scheduling.registerProvider(new Provider(name));
+    scheduling.registerProvider(new Provider(id));
   } catch (err) {
     res.status(400).send({ error: err.message });
     return;
@@ -86,8 +86,9 @@ app.post('/appointment/list', (req, res) => {
   try {
     res.status(200).send({
       appointments: scheduling
-          .getTimes(provider)
-          .filter(appointment => appointment - Date.now() < 24 * 60 * 60 * 1000) });
+        .getTimes(provider)
+        .filter((appointment) => appointment - Date.now() < 24 * 60 * 60 * 1000),
+    });
   } catch (err) {
     res.status(400).send({ error: err.message });
   }

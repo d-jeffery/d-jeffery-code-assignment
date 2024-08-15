@@ -1,10 +1,10 @@
 class Client {
   constructor(name) {
-    this.name = name;
+    this.id = name;
     this.bookings = new Map();
   }
 
-  addBooking({ slot, provider }) {
+  addBooking(slot, provider) {
     this.bookings.set(slot, provider);
   }
 

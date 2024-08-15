@@ -27,7 +27,7 @@ describe('Scheduling', () => {
 
     provider.addAppointments(1723680000000, 1723680000000 + (60 * 60 * 1000));
 
-    const token = scheduling.registerBooking(client.name, provider.name, 1723680000000);
+    const token = scheduling.registerBooking(client.id, provider.id, 1723680000000);
 
     expect(scheduling.unconfirmedAppointments.get(token)).toMatchSnapshot();
   });
@@ -42,7 +42,7 @@ describe('Scheduling', () => {
 
     provider.addAppointments(1723680000000, 1723680000000 + (60 * 60 * 1000));
 
-    const token = scheduling.registerBooking(client.name, provider.name, 1723680000000);
+    const token = scheduling.registerBooking(client.id, provider.id, 1723680000000);
     scheduling.confirmBooking(token);
 
     expect(scheduling.unconfirmedAppointments.size).toBe(0);
@@ -60,8 +60,8 @@ describe('Scheduling', () => {
 
         provider.addAppointments(1723680000000, 1723680000000 + (60 * 60 * 1000));
 
-        const token = scheduling.registerBooking(client.name, provider.name, 1723680000000);
-        scheduling.cancelBooking(token, provider.name, 1723680000000);
+        const token = scheduling.registerBooking(client.id, provider.id, 1723680000000);
+        scheduling.cancelBooking(token, provider.id, 1723680000000);
 
         expect(scheduling.unconfirmedAppointments.size).toBe(0);
         expect(client.getBookings()).toMatchSnapshot();
